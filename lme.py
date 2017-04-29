@@ -26,7 +26,7 @@ def cotacao_quatro_semanas():
     semana04_inicio = semana03_inicio - timedelta(weeks=1)
     semana04_fim = semana04_inicio + timedelta(days=4)
 
-    cotacaoatual = pd.read_csv('cotacao-atual.csv', sep=';')
+    cotacaoatual = pd.read_csv('cotacao-atual.csv')
 
     cotacaoatual.columns = ['Data', 'Cobre', 'Zinco', 'Aluminio', 'Chumbo', 'Estanho', 'Niquel', 'Dolar']
 
