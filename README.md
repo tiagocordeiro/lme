@@ -2,8 +2,6 @@
 
 #### Cotação London Metal Exchange usando Quandl
 
-[![N|Quandl](https://files.readme.io/195b8c0-small-quandl-logo.png)](https://www.quandl.com/)
-
 [Quandl](https://www.quandl.com/)
 
 * Register an account on Quandl 
