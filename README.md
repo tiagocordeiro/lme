@@ -10,4 +10,3 @@
 * After logging in, click on Me and then Account settings to find the API key
 
 [Quandl in Github](https://github.com/quandl/quandl-python)
-
