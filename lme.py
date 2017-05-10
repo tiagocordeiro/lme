@@ -38,21 +38,22 @@ def cotacao_quatro_semanas():
 
     df = df.drop('Data', axis=1)
 
-    periodo = df[semana04_inicio.strftime("%Y-%m-%d"):semana01_fim.strftime("%Y-%m-%d")].interpolate()
+    # periodo = df[semana04_inicio.strftime("%Y-%m-%d"):semana01_fim.strftime("%Y-%m-%d")].interpolate()
+    #
+    # serieslabels = periodo.index.date.tolist()
+    #
+    # periodo_grafico = pygal.Line(value_formatter=lambda x: '{} $'.format(x), show_x_labels=False)
+    #
+    # periodo_grafico.x_labels = map(lambda d: d.strftime('%d/%m/%Y'), serieslabels)
+    #
+    # for column_name, column in periodo.transpose().iterrows():
+    #     periodo_grafico.add('%s' % (column_name), pd.Series(periodo['%s' % (column_name)]), formatter=lambda x: '{}USD/Ton'.format(x))
+    #
+    # periodo_grafico.render()
+    #
+    # periodo_grafico.render_to_file('periodo.svg')
 
-    serieslabels = periodo.index.date.tolist()
-
-    periodo_grafico = pygal.Line(value_formatter=lambda x: '{} $'.format(x), show_x_labels=False)
-
-    periodo_grafico.x_labels = map(lambda d: d.strftime('%d/%m/%Y'), serieslabels)
-
-    for column_name, column in periodo.transpose().iterrows():
-        periodo_grafico.add('%s' % (column_name), pd.Series(periodo['%s' % (column_name)]), formatter=lambda x: '{}USD/Ton'.format(x))
-
-    periodo_grafico.render()
-
-    periodo_grafico.render_to_file('periodo.svg')
-
+    #imprime na tela DF
     for i in range(4, 0, -1):
         print('\u2554' + ('\u2550' * 33) + '\u2566' + ('\u2550' * 20) + '\u2566' + ('\u2550' * 17) + '\u2557')
         print('\u2551 Semana do ano:', eval('semana0'+str(i)+ '_inicio').strftime("%U"), ' ' * 13,
@@ -73,6 +74,8 @@ def cotacao_quatro_semanas():
         print('\u2550' * 73)
         print(media_semana_pivot)
         print('\n')
+
+    return
 
 
 if __name__ == '__main__':
