@@ -81,7 +81,7 @@ def cotacao_quatro_semanas():
 
     # Salva HTML Semana
     for i in range(4, 0, -1):
-        fo = open('../public_html/cotacoes/semana0'+str(i)+'.html', "w")
+        fo = open('cotacoes/semana0'+str(i)+'.html', "w") # Pode ser usado outro local para salvar os HTML Ex: ../public_html/cotacoes/
         fo.write(df[eval('semana0'+str(i)+ '_inicio').strftime("%Y-%m-%d"):eval('semana0'+str(i)+ '_fim').strftime("%Y-%m-%d")].to_html(classes=['semanal', 'table-striped', 'table-responsive']))
         fo.close()
 
@@ -91,7 +91,8 @@ def cotacao_quatro_semanas():
         media_semana = pd.DataFrame(media_semana.mean())
         media_semana.rename(columns={0: 'Semana:' + eval('semana0'+str(i)+ '_inicio').strftime("%U")}, inplace=True)
         media_semana_pivot = pd.pivot_table(media_semana, columns=['Cobre', 'Zinco', 'Aluminio', 'Chumbo', 'Estanho', 'Niquel', 'Dolar'])
-        fo = open('../public_html/cotacoes/semana0'+str(i)+'media.html', "w")
+        media_semana_pivot = media_semana_pivot[['Cobre', 'Zinco', 'Aluminio', 'Chumbo', 'Estanho', 'Niquel', 'Dolar']]
+        fo = open('cotacoes/semana0'+str(i)+'media.html', "w")
         fo.write(media_semana_pivot.to_html(classes=['semanal', 'table-striped', 'table-responsive']))
         fo.close()
 
