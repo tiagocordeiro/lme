@@ -56,7 +56,7 @@ def cotacao_quatro_semanas():
 
     periodo_grafico.render()
 
-    periodo_grafico.render_to_file('periodo.svg')
+    periodo_grafico.render_to_file('cotacoes/periodo.svg')
 
     #imprime na tela
     for i in range(4, 0, -1):
