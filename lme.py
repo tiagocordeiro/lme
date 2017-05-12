@@ -38,22 +38,27 @@ def cotacao_quatro_semanas():
 
     df = df.drop('Data', axis=1)
 
-    # periodo = df[semana04_inicio.strftime("%Y-%m-%d"):semana01_fim.strftime("%Y-%m-%d")].interpolate()
-    #
-    # serieslabels = periodo.index.date.tolist()
-    #
-    # periodo_grafico = pygal.Line(value_formatter=lambda x: '{} $'.format(x), show_x_labels=False)
-    #
-    # periodo_grafico.x_labels = map(lambda d: d.strftime('%d/%m/%Y'), serieslabels)
-    #
-    # for column_name, column in periodo.transpose().iterrows():
-    #     periodo_grafico.add('%s' % (column_name), pd.Series(periodo['%s' % (column_name)]), formatter=lambda x: '{}USD/Ton'.format(x))
-    #
-    # periodo_grafico.render()
-    #
-    # periodo_grafico.render_to_file('periodo.svg')
+    # Gera Gráfico com pygal
+    #TODO gerar gráficos separados por metal
 
-    #imprime na tela DF
+    periodo = df[semana04_inicio.strftime("%Y-%m-%d"):semana01_fim.strftime("%Y-%m-%d")].interpolate()
+
+    periodo.fillna(periodo.mean(), inplace=True)
+
+    serieslabels = periodo.index.date.tolist()
+
+    periodo_grafico = pygal.Line(value_formatter=lambda x: '{} $'.format(x), show_x_labels=False)
+
+    periodo_grafico.x_labels = map(lambda d: d.strftime('%d/%m/%Y'), serieslabels)
+
+    for column_name, column in periodo.transpose().iterrows():
+        periodo_grafico.add('%s' % (column_name), pd.Series(periodo['%s' % (column_name)]), formatter=lambda x: '{}USD/Ton'.format(x))
+
+    periodo_grafico.render()
+
+    periodo_grafico.render_to_file('periodo.svg')
+
+    #imprime na tela
     for i in range(4, 0, -1):
         print('\u2554' + ('\u2550' * 33) + '\u2566' + ('\u2550' * 20) + '\u2566' + ('\u2550' * 17) + '\u2557')
         print('\u2551 Semana do ano:', eval('semana0'+str(i)+ '_inicio').strftime("%U"), ' ' * 13,
@@ -63,19 +68,32 @@ def cotacao_quatro_semanas():
 
         print(df[eval('semana0'+str(i)+ '_inicio').strftime("%Y-%m-%d"):eval('semana0'+str(i)+ '_fim').strftime("%Y-%m-%d")])
 
-        media_semana = df[eval('semana0'+str(i)+ '_inicio').strftime("%Y-%m-%d"):eval('semana0'+str(i)+ '_fim').strftime("%Y-%m-%d")]
+        media_semana = df[eval('semana0' + str(i) + '_inicio').strftime("%Y-%m-%d"):eval('semana0' + str(i) + '_fim').strftime("%Y-%m-%d")]
         media_semana = pd.DataFrame(media_semana.mean())
 
         media_semana_tela = media_semana
         media_semana_tela.rename(columns={0: 'Média:    '}, inplace=True)
-        media_semana_pivot = pd.pivot_table(media_semana_tela,
-                                        columns=['Cobre', 'Zinco', 'Aluminio', 'Chumbo', 'Estanho', 'Niquel', 'Dolar'])
+        media_semana_pivot = pd.pivot_table(media_semana_tela, columns=['Cobre', 'Zinco', 'Aluminio', 'Chumbo', 'Estanho', 'Niquel', 'Dolar'])
         media_semana_pivot = media_semana_pivot[['Cobre', 'Zinco', 'Aluminio', 'Chumbo', 'Estanho', 'Niquel', 'Dolar']]
         print('\u2550' * 73)
         print(media_semana_pivot)
         print('\n')
 
-    return
+    # Salva HTML Semana
+    for i in range(4, 0, -1):
+        fo = open('../public_html/cotacoes/semana0'+str(i)+'.html', "w")
+        fo.write(df[eval('semana0'+str(i)+ '_inicio').strftime("%Y-%m-%d"):eval('semana0'+str(i)+ '_fim').strftime("%Y-%m-%d")].to_html(classes=['semanal', 'table-striped', 'table-responsive']))
+        fo.close()
+
+    # Salva HTML Média Semana
+    for i in range(4, 0, -1):
+        media_semana = df[eval('semana0' + str(i) + '_inicio').strftime("%Y-%m-%d"):eval('semana0' + str(i) + '_fim').strftime("%Y-%m-%d")]
+        media_semana = pd.DataFrame(media_semana.mean())
+        media_semana.rename(columns={0: 'Semana:' + eval('semana0'+str(i)+ '_inicio').strftime("%U")}, inplace=True)
+        media_semana_pivot = pd.pivot_table(media_semana, columns=['Cobre', 'Zinco', 'Aluminio', 'Chumbo', 'Estanho', 'Niquel', 'Dolar'])
+        fo = open('../public_html/cotacoes/semana0'+str(i)+'media.html', "w")
+        fo.write(media_semana_pivot.to_html(classes=['semanal', 'table-striped', 'table-responsive']))
+        fo.close()
 
 
 if __name__ == '__main__':
