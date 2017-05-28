@@ -4,15 +4,15 @@ lme
 Cotação London Metal Exchange usando Quandl
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: https://travis-ci.org/mulhergorila/lme.svg?branch=master
-    :target: https://travis-ci.org/mulhergorila/lme
+.. image:: https://travis-ci.org/tiagocordeiro/lme.svg?branch=master
+    :target: https://travis-ci.org/tiagocordeiro/lme
 
-.. image:: https://pyup.io/repos/github/mulhergorila/lme/shield.svg
-     :target: https://pyup.io/repos/github/mulhergorila/lme/
+.. image:: https://pyup.io/repos/github/tiagocordeiro/lme/shield.svg
+     :target: https://pyup.io/repos/github/tiagocordeiro/lme/
      :alt: Updates
 
-.. image:: https://pyup.io/repos/github/mulhergorila/lme/python-3-shield.svg
-     :target: https://pyup.io/repos/github/mulhergorila/lme/
+.. image:: https://pyup.io/repos/github/tiagocordeiro/lme/python-3-shield.svg
+     :target: https://pyup.io/repos/github/tiagocordeiro/lme/
      :alt: Python 3
 
 `Quandl <https://www.quandl.com/>`__
