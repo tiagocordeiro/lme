@@ -2,21 +2,42 @@
 # coding: utf-8
 
 from datetime import datetime, timedelta
+import os
 import pandas as pd
-import quandl
+import sqlite3 as db
+import locale
 import pygal
+import quandl
+
+quandl.ApiConfig.api_key = "ybMbt_yF4jhdhBDt_kbd"
+
+locale.setlocale(locale.LC_ALL, 'pt_BR')
 
 pd.options.display.float_format = '{:,.2f}'.format
 
 pd.set_option('colheader_justify', 'right')
 
+html_files = 'cotacoes'
+
+
+def check_html_folder():
+    if not os.path.exists(html_files):
+        os.makedirs(html_files)
+
 
 def cotacaoAtualizada():
     """ Pega a cotação atualizada da quandl
-    :return: Salva arquivo cotacao-atual.csv
+    :return: Salva arquivo cotacao-atual.csv e lme.db
     """
-    now = datetime.now()
-    periodo = now - timedelta(days=90)
+    check_html_folder()
+    cnx = db.connect('lme.db')
+
+    # Parametros de inicio e fim do periodo pode ser usado
+    # now = datetime.now()
+    # periodo = now - timedelta(days=120)
+    #
+    # start_date = periodo.strftime("%Y-%m-%d"),
+    # end_date = now.strftime("%Y-%m-%d")
 
     merged_data = quandl.get(["LME/PR_CU.2",
                               "LME/PR_ZI.2",
@@ -25,22 +46,39 @@ def cotacaoAtualizada():
                               "LME/PR_TN.2",
                               "LME/PR_NI.2",
                               "CURRFX/USDBRL.1"],
-                             start_date=periodo.strftime("%Y-%m-%d"),
-                             end_date=now.strftime("%Y-%m-%d"),
+                             start_date = "2012-01-03",
                              returns="pandas")
 
     merged_data.columns = ['Cobre', 'Zinco', 'Aluminio', 'Chumbo', 'Estanho',
                            'Niquel', 'Dolar']
 
-    merged_data.to_csv('cotacao-atual.csv', encoding='utf-8')
+    merged_data.to_csv('cotacoes/cotacao-atual.csv', encoding='utf-8')
+
+    merged_data.to_sql('cotacoes', cnx, if_exists='replace')
+
+    cnx.commit()
+    print("Cotação atualizada...")
+    cnx.close()
 
 
-def cotacao_periodo(qt_semanas=4):
+def pegaCotacao():
+    cnx = db.connect('lme.db')
+    df = pd.read_sql_query("select * from cotacoes", cnx)
+    cnx.close()
+    return df
+
+
+def cotacaoPeriodo(qt_semanas=4):
     """ Retorna a cotação dos metais na London Metal Exchange
     Ex: cotacao_periodo(5)
     :param qt_semanas: Padrão 4 semanas, incluindo a semana atual.
     :return: Gera arquivos html
     """
+    cnx = db.connect('lme.db')
+
+    if not os.path.exists(html_files):
+        os.makedirs(html_files)
+
     hoje = datetime.now()
 
     diadasemana = hoje.isoweekday()
@@ -61,7 +99,8 @@ def cotacao_periodo(qt_semanas=4):
         semanas[i] = (semanas[i - 1][0] - timedelta(weeks=1),
                       semanas[i - 1][1] - timedelta(weeks=1))
 
-    cotacaoatual = pd.read_csv('cotacao-atual.csv')
+    # cotacaoatual = pd.read_csv('cotacao-atual.csv')
+    cotacaoatual = pd.read_sql_query("select * from cotacoes", cnx)
 
     cotacaoatual.columns = ['Data', 'Cobre', 'Zinco', 'Aluminio', 'Chumbo',
                             'Estanho', 'Niquel', 'Dolar']
@@ -73,6 +112,8 @@ def cotacao_periodo(qt_semanas=4):
     df = df.set_index(df['Data'])
 
     df = df.drop('Data', axis=1)
+
+    df.fillna(method='ffill', inplace=True)
 
     datas = qt_semanas
 
@@ -146,7 +187,7 @@ def cotacao_periodo(qt_semanas=4):
         # versão com o número da semana do ano
         # fo = open('cotacoes/semana'
         # + str(semanas[i][0].strftime("%U")) + '.html', "w")
-        fo = open('cotacoes/semana0' + str(i) + '.html', "w")
+        fo = open('cotacoes/semana' + '{num:02d}'.format(num=i) + '.html', 'w')
         fo.write(df[semanas[i][0].strftime("%Y-%m-%d"):
                     semanas[i][1].strftime("%Y-%m-%d")].to_html(
                     classes=['semanal', 'table-striped', 'table-responsive']))
@@ -171,9 +212,17 @@ def cotacao_periodo(qt_semanas=4):
         # versão com número da semana do ano
         # fo = open('cotacoes/semana' + str(semanas[i][0].strftime("%U")) +
         #  'media.html', "w")
-        fo = open('cotacoes/semana0' + str(i) + 'media.html', "w")
+        fo = open('cotacoes/semana' + '{num:02d}'.format(num=i) + 'media.html', 'w')
         fo.write(media_semana_pivot.to_html(
             classes=['semanal', 'table-striped', 'table-responsive']))
         fo.close()
 
         # return 'exibindo {} semanas'.format(len(semanas))
+        cnx.close()
+
+
+if __name__ == '__main__':
+    # cotacao = pegaCotacao()
+    # print(cotacao)
+    # cotacaoPeriodo(4)
+    cotacaoAtualizada()

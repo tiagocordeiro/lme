@@ -1,6 +1,6 @@
 asn1crypto==0.22.0
 cffi==1.10.0
-cryptography==1.8.2
+cryptography==1.9
 idna==2.5
 inflection==0.3.1
 more-itertools==3.1.0
@@ -16,5 +16,5 @@ pyparsing==2.2.0
 python-dateutil==2.6.0
 pytz==2017.2
 Quandl==3.1.0
-requests==2.16.5
+requests==2.17.3
 six==1.10.0
