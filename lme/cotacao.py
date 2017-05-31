@@ -39,18 +39,13 @@ def cotacaoAtualizada():
     # start_date = periodo.strftime("%Y-%m-%d"),
     # end_date = now.strftime("%Y-%m-%d")
 
-    merged_data = quandl.get(["LME/PR_CU.2",
-                              "LME/PR_ZI.2",
-                              "LME/PR_AL.2",
-                              "LME/PR_PB.2",
-                              "LME/PR_TN.2",
-                              "LME/PR_NI.2",
-                              "CURRFX/USDBRL.1"],
-                             start_date = "2012-01-03",
+    merged_data = quandl.get(["LME/PR_CU.2", "LME/PR_ZI.2", "LME/PR_AL.2",
+                              "LME/PR_PB.2", "LME/PR_TN.2", "LME/PR_NI.2",
+                              "CURRFX/USDBRL.1"], start_date="2012-01-03",
                              returns="pandas")
 
-    merged_data.columns = ['Cobre', 'Zinco', 'Aluminio', 'Chumbo', 'Estanho',
-                           'Niquel', 'Dolar']
+    merged_data.columns = ['Cobre', 'Zinco', 'Aluminio', 'Chumbo',
+                           'Estanho', 'Niquel', 'Dolar']
 
     merged_data.to_csv('cotacoes/cotacao-atual.csv', encoding='utf-8')
 
@@ -212,7 +207,8 @@ def cotacaoPeriodo(qt_semanas=4):
         # versão com número da semana do ano
         # fo = open('cotacoes/semana' + str(semanas[i][0].strftime("%U")) +
         #  'media.html', "w")
-        fo = open('cotacoes/semana' + '{num:02d}'.format(num=i) + 'media.html', 'w')
+        fo = open('cotacoes/semana' + '{num:02d}'.format(num=i) + 'media.html',
+                  'w')
         fo.write(media_semana_pivot.to_html(
             classes=['semanal', 'table-striped', 'table-responsive']))
         fo.close()
