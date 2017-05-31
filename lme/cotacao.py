@@ -5,13 +5,9 @@ from datetime import datetime, timedelta
 import os
 import pandas as pd
 import sqlite3 as db
-import locale
 import pygal
 import quandl
 
-quandl.ApiConfig.api_key = "ybMbt_yF4jhdhBDt_kbd"
-
-locale.setlocale(locale.LC_ALL, 'pt_BR')
 
 pd.options.display.float_format = '{:,.2f}'.format
 
