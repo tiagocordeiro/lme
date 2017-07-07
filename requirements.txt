@@ -7,7 +7,7 @@ more-itertools==3.2.0
 ndg-httpsclient==0.4.2
 numpy==1.13.1
 packaging==16.8
-pandas==0.20.2
+pandas==0.20.3
 pyasn1==0.2.3
 pycparser==2.18
 pygal==2.4.0
