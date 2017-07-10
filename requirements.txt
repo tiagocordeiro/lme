@@ -13,7 +13,7 @@ pycparser==2.18
 pygal==2.4.0
 pyOpenSSL==17.1.0
 pyparsing==2.2.0
-python-dateutil==2.6.0
+python-dateutil==2.6.1
 pytz==2017.2
 requests==2.18.1
 Quandl==3.2.0
