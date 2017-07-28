@@ -1,6 +1,7 @@
 import csv
 import json
 
+
 def converte_csv2json():
     with open('cotacoes/cotacao-atual.csv') as f:
         reader = csv.DictReader(f)
