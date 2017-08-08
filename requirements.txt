@@ -1,7 +1,7 @@
 asn1crypto==0.22.0
 cffi==1.10.0
 cryptography==2.0.3
-idna==2.5
+idna==2.6
 inflection==0.3.1
 more-itertools==3.2.0
 ndg-httpsclient==0.4.2
