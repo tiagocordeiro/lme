@@ -8,7 +8,7 @@ ndg-httpsclient==0.4.3
 numpy==1.13.3
 packaging==16.8
 pandas==0.20.3
-pyasn1==0.3.6
+pyasn1==0.3.7
 pycparser==2.18
 pygal==2.4.0
 pyOpenSSL==17.3.0
