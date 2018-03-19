@@ -1,5 +1,5 @@
 asn1crypto==0.23.0
-cryptography==2.1.4
+cryptography==2.2
 cffi==1.11.2
 idna==2.6
 inflection==0.3.1
