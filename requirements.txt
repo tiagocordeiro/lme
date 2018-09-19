@@ -9,7 +9,7 @@ numpy==1.13.3
 packaging==16.8
 pyasn1==0.4.2
 pandas==0.21.0
-pycparser==2.18
+pycparser==2.19
 pygal==2.4.0
 pyOpenSSL==17.5.0
 pyparsing==2.2.0
