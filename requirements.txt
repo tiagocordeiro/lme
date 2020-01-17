@@ -17,4 +17,4 @@ python-dateutil==2.6.1
 pytz==2017.3
 requests==2.20.0
 Quandl==3.2.1
-six==1.11.0
+six==1.14.0
