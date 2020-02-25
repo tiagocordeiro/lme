@@ -1,12 +1,20 @@
 language: python
 python:
-  - "3.6"
-# command to install dependencies
-install: "pip install -r requirements-dev.txt"
+  - "3.8-dev"
+services:
+  postgresql
+addons:
+  postgresql: '9.5'
+install:
+  - cp contrib/env-sample .env
+  - pip install -r requirements-dev.txt codecov
+before_script:
+  - psql -c "CREATE DATABASE lme;" -U postgres
+  - python -c 'from lme.db import create;create()'
 # command to run tests
 script:
   - flake8 .
-#  - py.test --cov=pytocli tests/
-#  - python -m doctest README.md
-# after_success:
-#  - coveralls
+  - pycodestyle .
+  - coverage run -m pytest -v --doctest-glob='*.md'
+after_success:
+  - codecov
