@@ -15,6 +15,6 @@ before_script:
 script:
   - flake8 .
   - pycodestyle .
-  - coverage run -m pytest -v --doctest-glob='*.md'
+  - coverage run -m pytest -v
 after_success:
   - codecov

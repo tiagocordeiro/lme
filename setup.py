@@ -3,6 +3,7 @@ import os
 import sys
 from distutils.util import convert_path
 from fnmatch import fnmatchcase
+from os import path
 
 from setuptools import setup, find_packages
 
@@ -103,34 +104,43 @@ DESCRIPTION = "Cotação London Metal Exchange"
 NAME = PACKAGE
 AUTHOR = "Tiago Cordeiro"
 AUTHOR_EMAIL = "tiago@mulhergorila.com"
-URL = "https://github.com/mulhergorila/lme"
+URL = "https://github.com/tiagocordeiro/lme"
 VERSION = __import__(PACKAGE).__version__
+
+here = path.abspath(path.dirname(__file__))
+
+# Get the long description from the README file
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(
     name=NAME,
     version=VERSION,
     description=DESCRIPTION,
-    long_description=URL,
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     author=AUTHOR,
     author_email=AUTHOR_EMAIL,
-    license="AGPL",
+    license="MIT",
     url=URL,
     packages=find_packages(exclude=["tests.*", "tests"]),
     package_data=find_package_data(PACKAGE, only_in_packages=False),
     classifiers=[
         "Development Status :: 4 - Beta",
-        "Environment :: Web Environment",
+        "Environment :: Console",
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: GNU Affero General Public License v3 or "
-        "later (AGPLv3+)",
+        "License :: OSI Approved :: MIT License",
+        "Natural Language :: Portuguese (Brazilian)",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
         "Framework :: Paste",
     ],
     zip_safe=False,
     install_requires=[
-        'pandas',
-        'pygal',
-        'Quandl',
+        'quandl',
+        'python-dotenv',
+        'sqlalchemy',
+        'psycopg2',
     ]
 )

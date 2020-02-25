@@ -118,3 +118,147 @@ def get_data_from_quandl():
     ]
 
     return todo_periodo
+
+
+def last_weeks(qt_semanas=4):
+    """ Retorna a cotação dos metais na London Metal Exchange
+    Ex: last_weeks(5)
+    :param qt_semanas: Padrão 4 semanas, incluindo a semana atual.
+    :return: Gera arquivos html
+    """
+    periodo_cotacao = date_range_builder(weeks=qt_semanas)
+    hoje = periodo_cotacao["fim"]
+    periodo = periodo_cotacao["inicio"]
+
+    parse.uses_netloc.append("postgres")
+    url = parse.urlparse(os.environ["DATABASE_URL"])
+
+    conn = psycopg2.connect(
+        database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port,
+    )
+
+    query = """
+            SELECT *
+            FROM cotacao_lme
+            WHERE "Date" BETWEEN %(inicio)s AND %(fim)s
+            """
+
+    query_params = {"inicio": periodo, "fim": hoje}
+
+    cotacaoatual = pd.read_sql(query, conn, params=query_params)
+
+    cotacaoatual.columns = [
+        "Data",
+        "Cobre",
+        "Zinco",
+        "Aluminio",
+        "Chumbo",
+        "Estanho",
+        "Niquel",
+        "Dolar",
+    ]
+
+    semana01_inicio = hoje - timedelta(days=hoje.isoweekday() - 1)
+    semana01_fim = semana01_inicio + timedelta(days=4)
+
+    semanas = {1: (semana01_inicio, semana01_fim)}
+
+    for i in range(2, qt_semanas + 1):
+        semanas[i] = (
+            semanas[i - 1][0] - timedelta(weeks=1),
+            semanas[i - 1][1] - timedelta(weeks=1),
+        )
+
+    df = pd.DataFrame(cotacaoatual)
+
+    df["Data"] = pd.to_datetime(df["Data"])
+
+    df = df.set_index(df["Data"])
+
+    df = df.drop("Data", axis=1)
+
+    datas = qt_semanas
+
+    periodo = df[
+              semanas[qt_semanas][0].strftime(
+                  "%Y-%m-%d"): semana01_fim.strftime("%Y-%m-%d")
+              ].interpolate()
+
+    periodo.fillna(periodo.mean(), inplace=True)
+
+    # imprime na tela
+    for i in range(datas, 0, -1):
+        print(
+            "\u2554"
+            + ("\u2550" * 33)
+            + "\u2566"
+            + ("\u2550" * 20)
+            + "\u2566"
+            + ("\u2550" * 17)
+            + "\u2557"
+        )
+
+        print(
+            "\u2551 Semana do ano:",
+            semanas[i][0].strftime("%U"),
+            " " * 13,
+            "\u2551 Início:",
+            semanas[i][0].strftime("%d-%m-%Y"),
+            "\u2551 Fim:",
+            semanas[i][1].strftime("%d-%m-%Y"),
+            "\u2551",
+        )
+
+        print(
+            "\u255A"
+            + ("\u2550" * 33)
+            + "\u2569"
+            + ("\u2550" * 20)
+            + "\u2569"
+            + ("\u2550" * 17)
+            + "\u255D"
+        )
+
+        print(
+            df[semanas[i][0].strftime("%Y-%m-%d"): semanas[i][1].strftime(
+                "%Y-%m-%d")]
+        )
+
+        media_semana = df[
+                       semanas[i][0].strftime("%Y-%m-%d"): semanas[i][
+                           1].strftime("%Y-%m-%d")
+                       ]
+
+        media_semana = pd.DataFrame(media_semana.mean())
+
+        media_semana_tela = media_semana
+        media_semana_tela.rename(columns={0: "Média:    "}, inplace=True)
+        media_semana_pivot = pd.pivot_table(
+            media_semana_tela,
+            columns=[
+                "Cobre",
+                "Zinco",
+                "Aluminio",
+                "Chumbo",
+                "Estanho",
+                "Niquel",
+                "Dolar",
+            ],
+        )
+
+        media_semana_pivot = media_semana_pivot[
+            ["Cobre", "Zinco", "Aluminio", "Chumbo", "Estanho", "Niquel",
+             "Dolar"]
+        ]
+
+        print("\u2550" * 73)
+        print(media_semana_pivot)
+        print("\n")
+
+
+if __name__ == "__main__":
+    last_weeks(1)
