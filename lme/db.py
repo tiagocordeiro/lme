@@ -28,10 +28,6 @@ def update_database():
     connection.close()
 
 
-def get_from_database():
-    pass
-
-
 def create():
     meta = MetaData()
 
