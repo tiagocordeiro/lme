@@ -7,6 +7,6 @@ pytest-cov==2.8.1
 
 # Lint
 flake8==3.7.9
-black==19.10b0
+black==21.4b2
 
 -r requirements.txt
