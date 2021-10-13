@@ -1,19 +1,13 @@
 # LME
 
-## Cotação London Metal Exchange usando Quandl
+## Cotação London Metal Exchange
+
+![Deploy workflow](https://github.com/tiagocordeiro/lme/actions/workflows/python-app.yml/badge.svg)
 [![Build Status](https://travis-ci.org/tiagocordeiro/lme.svg?branch=master)](https://travis-ci.org/tiagocordeiro/lme)
 [![Updates](https://pyup.io/repos/github/tiagocordeiro/lme/shield.svg)](https://pyup.io/repos/github/tiagocordeiro/lme/)
 [![Python 3](https://pyup.io/repos/github/tiagocordeiro/lme/python-3-shield.svg)](https://pyup.io/repos/github/tiagocordeiro/lme/)
 [![codecov](https://codecov.io/gh/tiagocordeiro/lme/branch/master/graph/badge.svg)](https://codecov.io/gh/tiagocordeiro/lme)
 [![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/tiagocordeiro/lme/blob/master/LICENSE)
-
-> Requisitos básicos
-Você precisa de uma conta (gratuita) na [Quandl](https://www.quandl.com)
-
--  Register an account on Quandl
--  After logging in, click on Me and then Account settings to find the API key
-
-[Quandl in Github](https://github.com/quandl/quandl-python)
 
 #### Instalando o pacote via pip
 ```
@@ -106,12 +100,6 @@ Verificando o `Code style`
 pycodestyle .
 flake8 .
 ```
-
-### TODO:
-[ ] Permitir uso sem banco de dados
-
-[ ] Permitir uso sem Quandl API Key (requisições limitadas)
-
 
 ### Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
