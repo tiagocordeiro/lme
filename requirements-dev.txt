@@ -1,12 +1,11 @@
 # Tests
-pytest==5.3.5
+pytest==6.2.5
 
 # Covarage
-coverage==5.0.3
-pytest-cov==2.8.1
+coverage==6.0.2
+pytest-cov==3.0.0
 
 # Lint
-flake8==3.7.9
-black==19.10b0
+flake8==4.0.1
 
 -r requirements.txt

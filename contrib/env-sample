@@ -1,6 +1,0 @@
-# Basic SetUp
-# Database
-DATABASE_URL=postgres://postgres:postgres@localhost/postgres
-
-# Quandl
-QUANDL_KEY=
