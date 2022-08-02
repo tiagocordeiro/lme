@@ -6,6 +6,6 @@ coverage==6.0.2
 pytest-cov==3.0.0
 
 # Lint
-flake8==4.0.1
+flake8==5.0.3
 
 -r requirements.txt
