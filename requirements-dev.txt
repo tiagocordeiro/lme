@@ -3,7 +3,7 @@ pytest==6.2.5
 
 # Covarage
 coverage==6.0.2
-pytest-cov==3.0.0
+pytest-cov==4.0.0
 
 # Lint
 flake8==4.0.1
