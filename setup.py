@@ -138,9 +138,7 @@ setup(
     ],
     zip_safe=False,
     install_requires=[
-        'quandl',
-        'python-dotenv',
-        'sqlalchemy',
-        'psycopg2',
+        'requests',
+        'rich',
     ]
 )
