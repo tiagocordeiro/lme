@@ -2,7 +2,7 @@
 pytest==7.4.3
 
 # Covarage
-coverage==7.3.2
+coverage==7.3.4
 pytest-cov==4.1.0
 
 # Lint
