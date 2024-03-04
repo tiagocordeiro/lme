@@ -1,5 +1,5 @@
 # Tests
-pytest==7.4.3
+pytest==8.1.0
 
 # Covarage
 coverage==7.3.2
